@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <cmath>
 typedef uintptr_t uintptr;
-#include "MemoryMgr.h"	// take from skygfx_vc
+#include "MemoryMgr_all.h"
 
 typedef uint8_t uint8, uchar;
 typedef uint16_t uint16, ushort;
@@ -30,7 +30,7 @@ struct GlobalScene
 	void *world;
 	void *camera;
 };
-GlobalScene &Scene = *(GlobalScene*)0x726768;
+GlobalScene &Scene = *AddressByVersion<GlobalScene*>(0x726768, 0, 0, 0x8100B8, 0, 0, 0xC17038);
 
 float FOV = 70.0f;
 
@@ -80,7 +80,7 @@ float hFov2vFov(float hfov)
 	hfov = atan(tan(vfov/2) * ar2) *2;
 	return RADTODEG(hfov);
 }
-float &CDraw__ms_fFOV = *(float*)0x5FBC6C;
+float &CDraw__ms_fFOV = *(float*)AddressByVersion<float*>(0x5FBC6C, 0, 0, 0x696658, 0, 0, 0x8D5038);
 void (*CDraw__SetFOV_hook)(float fov);
 void CDraw__SetFOV(float fov)
 {
@@ -125,14 +125,55 @@ set:
 	patchAllFOV();
 }
 
+void
+patchVC10(void)
+{
+	uint32 addr = 0x54A2E0;
+	// convert FOV to aspect ratio
+	if(*(uint8*)addr == 0xE9){
+		// Sombody already overwrote SetFOV with a jump, we assume it was WS fix
+	}else{
+		// ignore aspect ratio in CameraSize and use raster dimensions instead
+		// otherwise hFov2vFov won't give expected results
+		InjectHook(0x580900, 0x580918, PATCH_JUMP);
+
+		InjectHook(addr, CDraw__SetFOV, PATCH_JUMP);
+	}
+}
+
+void
+patchSA10(void)
+{
+	uint32 addr = 0x6FF410;
+	// convert FOV to aspect ratio
+	if(*(uint8*)addr == 0xE9){
+		// Sombody already overwrote SetFOV with a jump, we assume it was WS fix
+	}else{
+		// ignore aspect ratio in CameraSize and use raster dimensions instead
+		// otherwise hFov2vFov won't give expected results
+		InjectHook(0x72FCFE, 0x72FD16, PATCH_JUMP);
+
+		InjectHook(addr, CDraw__SetFOV, PATCH_JUMP);
+	}
+}
+
 BOOL WINAPI
 DllMain(HINSTANCE hInst, DWORD reason, LPVOID)
 {
 	if(reason == DLL_PROCESS_ATTACH){
-		AddressByVersion<uint32_t>(0, 0, 0, 0, 0, 0);
+		AddressByVersion<uint32_t>(0, 0, 0, 0, 0, 0, 0);
 		GetModuleFileName(hInst, dllName, MAX_PATH);
-		if (gtaversion == III_10)
+		switch(gtaversion){
+		case III_10:
 			patchIII10();
+			break;
+		case VC_10:
+			patchVC10();
+			break;
+		case SA_10:
+			patchSA10();
+			break;
+		}
 	}
 
 	return TRUE;

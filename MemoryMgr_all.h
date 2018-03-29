@@ -66,7 +66,7 @@ inline T AddressByVersion(uintptr addressIII10, uintptr addressIII11, uintptr ad
 inline bool
 is10(void)
 {
-	return gtaversion == III_10 || gtaversion == VC_10;
+	return gtaversion == III_10 || gtaversion == VC_10 || gtaversion == SA_10;
 }
 
 inline bool

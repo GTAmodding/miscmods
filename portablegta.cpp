@@ -45,8 +45,9 @@ getSaveFileName(const char *dir)
 	getSaveFileName_orig(getUserFilesDir());
 }
 
-void
-patch(void)
+int (*RsEventHandler_orig)(int a, int b);
+int
+delayedPatches(int a, int b)
 {
 	char *p;
 	GetModuleFileName(NULL, userPath, MAX_PATH);
@@ -56,7 +57,7 @@ patch(void)
 	// Fail if RenderWare has already been started = loaded by MSS
 	if(gtaversion != SA_10 && Camera){
 		MessageBox(NULL, "The portability plugin cannot be loaded by the default Mss32 ASI loader.\nUse another loader.", "Error", MB_ICONERROR | MB_OK);
-		return;
+		return FALSE;
 	}
 
 	if(gtaversion == III_10){
@@ -68,14 +69,16 @@ patch(void)
 	}else if(gtaversion == SA_10){
 		InjectHook(0x744FB0, getUserFilesDir, PATCH_JUMP);
 	}
+
+	return RsEventHandler_orig(a, b);
 }
 
 BOOL WINAPI
 DllMain(HINSTANCE hInst, DWORD reason, LPVOID)
 {
 	if(reason == DLL_PROCESS_ATTACH){
-		AddressByVersion<int>(0, 0, 0, 0, 0, 0, 0);
-		patch();
+		if(AddressByVersion<int>(1, 0, 0, 1, 0, 0, 1))
+			InterceptCall(&RsEventHandler_orig, delayedPatches, AddressByVersion<int>(0x58275E, 0, 0, 0x5FFAFE, 0, 0, 0x748739));
 	}
 	return TRUE;
 }
