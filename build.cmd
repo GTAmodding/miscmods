@@ -2,6 +2,7 @@
 set OLDPATH=%PATH%
 call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32.bat"
 
+cl /LD /I %RWSDK34% /I C:\Users\aap\src\lpng1634 "C:\Users\aap\src\lpng1634\projects\vstudio\Release Library\libpng16.lib" "C:\Users\aap\src\lpng1634\projects\vstudio\Release Library\zlib.lib" screenshot.cpp /Fescreenshot.dll
 cl /LD iiifont.cpp /Feiiifont.dll
 cl /LD noreplay.cpp /Fenoreplay.dll
 cl /LD miscfix.cpp /Femiscfix.dll
