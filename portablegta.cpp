@@ -61,7 +61,11 @@ delayedPatches(int a, int b)
 	}
 
 	if(gtaversion == III_10){
-		InjectHook(0x580BB0, getUserFilesDir, PATCH_JUMP);
+		// also patched by SilentPatch. so better replace the calls instead
+		//InjectHook(0x580BB0, getUserFilesDir, PATCH_JUMP);
+		InjectHook(0x479080, getUserFilesDir);
+		InjectHook(0x5811DD, getUserFilesDir);
+		InjectHook(0x591F10, getUserFilesDir);
 	}else if(gtaversion == VC_10){
 		InjectHook(0x602240, getUserFilesDir, PATCH_JUMP);
 		InjectHook(0x601A40, 0x601B2A, PATCH_JUMP);
