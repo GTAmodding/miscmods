@@ -105,6 +105,7 @@ RwGrabScreen(RwCamera *cam)
 {
 	char name[256];
 	RwImage *img = psGrabScreen(cam);
+	CreateDirectory("snapshots", nil);
 	sprintf(name, "snapshots/snap_%lld.png", time(nil));
 	writePNG(img, name);
 	RwImageDestroy(img);
