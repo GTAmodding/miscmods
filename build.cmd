@@ -15,3 +15,4 @@ cl /LD extradirfix.cpp /Feextradirfix.dll
 cl /LD overridecd.cpp /Feoverridecd.dll
 cl /LD portablegta.cpp /Feportablegta.dll
 cl /LD hydraulics.cpp /Fehydraulics.dll
+cl /LD regionfree.cpp /Feregionfree.dll
