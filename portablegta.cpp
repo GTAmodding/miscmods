@@ -67,7 +67,11 @@ delayedPatches(int a, int b)
 		InjectHook(0x5811DD, getUserFilesDir);
 		InjectHook(0x591F10, getUserFilesDir);
 	}else if(gtaversion == VC_10){
-		InjectHook(0x602240, getUserFilesDir, PATCH_JUMP);
+//		InjectHook(0x602240, getUserFilesDir, PATCH_JUMP);
+
+		InjectHook(0x48E020, getUserFilesDir);
+		InjectHook(0x61D8CA, getUserFilesDir);
+
 		InjectHook(0x601A40, 0x601B2A, PATCH_JUMP);
 		InterceptCall(&getSaveFileName_orig, getSaveFileName, 0x601B30);
 	}else if(gtaversion == SA_10){

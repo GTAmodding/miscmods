@@ -44,6 +44,13 @@ patchSA10(void)
 {
 	InjectHook(0x5B82F0, LoadCdDirectories, PATCH_CALL);
 	InjectHook(0x5B82F0 + 5, 0x5B8324, PATCH_JUMP);
+
+	// swap gta3.img and gta_int.img
+	Patch(0x408430 + 1, 0x858B20);
+	Patch(0x40844C + 1, 0x858B20);
+
+	Patch(0x40846E + 1, 0x858AF4);
+	Patch(0x40848C + 1, 0x858AF4);
 }
 
 BOOL WINAPI
