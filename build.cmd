@@ -4,6 +4,7 @@ call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\Tools\vsvars32
 
 cl /LD /I %RWSDK34% /I C:\Users\aap\src\lpng1634 "C:\Users\aap\src\lpng1634\projects\vstudio\Release Library\libpng16.lib" "C:\Users\aap\src\lpng1634\projects\vstudio\Release Library\zlib.lib" screenshot.cpp /Fescreenshot.dll
 cl /LD betacam.cpp /Febetacam.dll
+cl /LD betahud.cpp /Febetahud.dll
 cl /LD vehicleflare.cpp /Fevehicleflare.dll
 cl /LD iiifont.cpp /Feiiifont.dll
 cl /LD noreplay.cpp /Fenoreplay.dll
@@ -16,3 +17,5 @@ cl /LD overridecd.cpp /Feoverridecd.dll
 cl /LD portablegta.cpp /Feportablegta.dll
 cl /LD hydraulics.cpp /Fehydraulics.dll
 cl /LD regionfree.cpp /Feregionfree.dll
+cl /LD noskinshader.cpp /Fenoskinshader.dll
+cl /LD uncensor.cpp /Feuncensor.dll
